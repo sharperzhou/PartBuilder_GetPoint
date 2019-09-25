@@ -1,0 +1,72 @@
+﻿<Window x:Class="PartBuilder.GetPoint.View.SavePointUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PartBuilder.GetPoint.View"
+             xmlns:md="clr-namespace:PartBuilder.GetPoint.Model"
+             mc:Ignorable="d" 
+             Width="600" Height="400" WindowStartupLocation="CenterOwner"
+             Title="系列化零件库设计系统 - 保存特征点"
+             Loaded="Window_Loaded">
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="5" TextWrapping="Wrap" Text="所有零件库" FontSize="16"/>
+        <TextBlock Margin="5" Grid.Column="1" TextWrapping="Wrap" FontSize="16"
+                   Text="{Binding ElementName=DbFileListBox, Path=SelectedItem}"/>
+        <TextBlock Margin="5" Grid.Column="2" TextWrapping="Wrap" Text="数据操作" FontSize="16"/>
+        <ListBox Name="DbFileListBox" Margin="5" Grid.Row="1" Grid.Column="0" 
+                 SelectionChanged="DbFileListBox_SelChanged"/>
+        <TreeView Name="PartsTreeView" Grid.Column="1" Grid.Row="1" Margin="5">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type md:PartsModel}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="0,0,5,0" Source="{Binding IconPath}"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <DockPanel Grid.Row="1" Grid.Column="2">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition  Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBox x:Name="NewDbTextBox" Grid.Row="0" Grid.Column="0" Margin="5,5,2,2"/>
+                <Button Grid.Row="0" Grid.Column="1" Content="新建库"  Margin="2,5,5,2"
+                        IsEnabled="{Binding ElementName=NewDbTextBox, Path=Text.Length}" Click="AddDbBtn_Click"/>
+                <TextBox x:Name="NewCatalogTextBox" Grid.Row="1" Grid.Column="0" Margin="5,2,2,2"/>
+                <Button Grid.Row="1" Grid.Column="2"  Content="新建分类"  Margin="2,2,5,2"
+                        IsEnabled="{Binding ElementName=NewCatalogTextBox, Path=Text.Length}" Click="AddDirBtn_Click"/>
+            </Grid>
+            <TextBlock Text="新零件名" DockPanel.Dock="Top" Margin="5,5,5,0"/>
+            <TextBox x:Name="NewPartName" Text="" DockPanel.Dock="Top" Margin="5,0,5,5"/>
+            <TextBlock Text="所属分类" DockPanel.Dock="Top" Margin="5,5,5,0"/>
+            <ComboBox Name="CboCatalog" DockPanel.Dock="Top" Margin="5,0,5,5"/>
+            <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="保存" Margin="5" IsEnabled="{Binding ElementName=NewPartName,Path=Text.Length}" Click="SaveBtn_Click"/>
+                <Button Content="取消" Grid.Column="1" Margin="5" IsDefault="True" Click="CancleBtn_Click"/>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>
