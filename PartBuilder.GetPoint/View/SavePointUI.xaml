@@ -64,7 +64,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="保存" Margin="5" IsEnabled="{Binding ElementName=NewPartName,Path=Text.Length}" Click="SaveBtn_Click"/>
+                <Button Name="BtnSave" Content="保存" Margin="5" IsEnabled="{Binding ElementName=NewPartName,Path=Text.Length}" Click="SaveBtn_Click"/>
                 <Button Content="取消" Grid.Column="1" Margin="5" IsDefault="True" Click="CancleBtn_Click"/>
             </Grid>
         </DockPanel>
