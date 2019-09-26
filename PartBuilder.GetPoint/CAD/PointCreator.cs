@@ -4,8 +4,6 @@ using GrxCAD.EditorInput;
 using GrxCAD.Geometry;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PartBuilder.GetPoint.CAD
 {
@@ -121,27 +119,6 @@ namespace PartBuilder.GetPoint.CAD
                 editor.WriteMessage($"\n{e.Message}");
             }
 
-        }
-    }
-
-    internal class PointStyleChanger : IDisposable
-    {
-        [System.Security.SuppressUnmanagedCodeSecurity]
-        [DllImport("gced.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl, EntryPoint = "gcedGetEnv")]
-        private static extern int AcedGetEnv(string envName, StringBuilder ReturnValue);
-
-        [System.Security.SuppressUnmanagedCodeSecurity]
-        [DllImport("gced.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl, EntryPoint = "gcedSetEnv")]
-        private static extern int AcedSetEnv(string envName, StringBuilder NewValue);
-
-        public void Dispose()
-        {
-            AcedSetEnv("PDMODE", new StringBuilder("0"));
-        }
-
-        public PointStyleChanger()
-        {
-            AcedSetEnv("PDMODE", new StringBuilder("35"));
         }
     }
 }

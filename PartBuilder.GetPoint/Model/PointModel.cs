@@ -1,5 +1,8 @@
 ﻿namespace PartBuilder.GetPoint.Model
 {
+    /// <summary>
+    /// Point model
+    /// </summary>
     class PointModel
     {
         /// <summary>

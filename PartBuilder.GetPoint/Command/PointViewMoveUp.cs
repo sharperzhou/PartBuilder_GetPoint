@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace PartBuilder.GetPoint.Command
 {
+    /// <summary>
+    /// move up
+    /// </summary>
     class PointViewMoveUp : ICommand
     {
         public PointViewMoveUp(PointViewModel viewModel)
@@ -23,6 +26,10 @@ namespace PartBuilder.GetPoint.Command
                 && _viewModel.PointModelList.IndexOf(_viewModel.SelectedItem) > 0);
         }
 
+        /// <summary>
+        /// move up logic
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             var sel = _viewModel.SelectedItem;

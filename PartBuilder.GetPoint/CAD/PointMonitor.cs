@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 namespace PartBuilder.GetPoint.CAD
 {
-    public class PointManager : IDisposable
+    /// <summary>
+    /// Point monitor class
+    /// </summary>
+    public class PointMonitor : IDisposable
     {
-        public PointManager()
+        public PointMonitor()
         {
             HostApplicationServices.WorkingDatabase.ObjectAppended += (o, e) =>
             {
@@ -27,6 +30,9 @@ namespace PartBuilder.GetPoint.CAD
             }
         }
 
+        /// <summary>
+        /// Erase all the points before disposing
+        /// </summary>
         public void Dispose()
         {
             if (_pointIds.Count == 0) return;

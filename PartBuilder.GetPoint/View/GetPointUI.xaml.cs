@@ -1,6 +1,5 @@
 ﻿using PartBuilder.GetPoint.CAD;
 using PartBuilder.GetPoint.Model;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace PartBuilder.GetPoint.View
@@ -14,10 +13,10 @@ namespace PartBuilder.GetPoint.View
         {
             InitializeComponent();
 
-            _pointManager = new PointManager();
+            _pointManager = new PointMonitor();
         }
 
-        private readonly PointManager _pointManager;
+        private readonly PointMonitor _pointManager;
 
         /// <summary>
         /// Exit UI window
@@ -27,20 +26,6 @@ namespace PartBuilder.GetPoint.View
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        /// <summary>
-        /// Pick the base point
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Pick_Base(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-            var basePt = PickPartHelper.GetBasePoint();
-            BasePoint.Text = basePt.ToString();
-            BasePoint.Tag = basePt;
-            this.Show();
         }
 
         /// <summary>
@@ -69,20 +54,26 @@ namespace PartBuilder.GetPoint.View
             this.Show();
         }
 
+        /// <summary>
+        /// close window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closed(object sender, System.EventArgs e)
         {
             _pointManager.Dispose();
         }
 
+        /// <summary>
+        /// into next step
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             var savePtUI = new SavePointUI();
 
-            var data = new List<object> { (DataContext as PointViewModel).PointModelList };
-            if (BasePoint.Tag != null) data.Add(BasePoint.Tag);
-
-            savePtUI.DataContext = data;
-
+            savePtUI.DataContext = (DataContext as PointViewModel).PointModelList;
 
             savePtUI.ShowDialog();
         }

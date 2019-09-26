@@ -5,8 +5,18 @@ using System.Data.SQLite;
 
 namespace PartBuilder.GetPoint.DataAccess
 {
+    /// <summary>
+    /// Point data access class
+    /// </summary>
     class PointDao
     {
+        /// <summary>
+        /// add point into db
+        /// </summary>
+        /// <param name="points">point model list</param>
+        /// <param name="partId">part id</param>
+        /// <param name="dbName">db name</param>
+        /// <returns></returns>
         public static bool AddPoints(IList<PointModel> points, int partId, string dbName)
         {
             try

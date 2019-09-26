@@ -30,10 +30,9 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type md:PartsModel}" ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Margin="0,0,5,0" Source="{Binding IconPath}"/>
+                        <Image Margin="0,0,5,0" Source="{Binding IconPath, Mode=OneWay}"/>
                         <TextBlock Text="{Binding Name}"/>
                     </StackPanel>
-
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PartBuilder.GetPoint.DataAccess
 {
+    /// <summary>
+    /// Part or directory data access class
+    /// </summary>
     class PartsDao : IDisposable
     {
         public PartsDao(string dbName)
@@ -16,6 +17,10 @@ namespace PartBuilder.GetPoint.DataAccess
             _conn = Utils.GetConnection(new DbFileHelper().GetFullName(dbName));
         }
 
+        /// <summary>
+        /// Get parts
+        /// </summary>
+        /// <returns></returns>
         public IList<PartsModel> GetParts()
         {
             var ret = new List<PartsModel>();
@@ -46,6 +51,10 @@ namespace PartBuilder.GetPoint.DataAccess
             return ret;
         }
 
+        /// <summary>
+        /// Get directories
+        /// </summary>
+        /// <returns></returns>
         public IList<PartsModel> GetDirectory()
         {
             var ret = new List<PartsModel>();
@@ -78,6 +87,12 @@ namespace PartBuilder.GetPoint.DataAccess
             return ret;
         }
 
+        /// <summary>
+        /// Add directory into db
+        /// </summary>
+        /// <param name="parentId">pid</param>
+        /// <param name="newName">new name</param>
+        /// <returns></returns>
         public bool AddDirectory(int parentId, string newName)
         {
             try
@@ -120,6 +135,13 @@ namespace PartBuilder.GetPoint.DataAccess
             return true;
         }
 
+        /// <summary>
+        /// Add part into db, return new part id for inserting points
+        /// </summary>
+        /// <param name="parentId">pid of directory</param>
+        /// <param name="newName">new name for part</param>
+        /// <param name="newPartId">returned new part id</param>
+        /// <returns></returns>
         public bool AddPart(int parentId, string newName, out int newPartId)
         {
             newPartId = -1;
@@ -130,8 +152,8 @@ namespace PartBuilder.GetPoint.DataAccess
                     var dt = new DataTable();
                     ap.Fill(dt);
 
-                    int partId = dt.Rows.Count == 0 
-                        ? 0 
+                    int partId = dt.Rows.Count == 0
+                        ? 0
                         : dt.AsEnumerable().Select(t => Convert.ToInt32(t["PartID"])).Max();
 
                     int sortPos = dt.Rows.Count == 0

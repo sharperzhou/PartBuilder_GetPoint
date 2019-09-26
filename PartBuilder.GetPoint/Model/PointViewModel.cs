@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace PartBuilder.GetPoint.Model
 {
+    /// <summary>
+    /// Point view model (Data Grid control)
+    /// </summary>
     class PointViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -16,6 +19,7 @@ namespace PartBuilder.GetPoint.Model
         {
             _pointModelList = new ObservableCollection<PointModel>();
 
+            // Point added event
             HostApplicationServices.WorkingDatabase.ObjectAppended += (o, e) =>
             {
                 if (!(e.DBObject is DBPoint)) return;
@@ -27,10 +31,12 @@ namespace PartBuilder.GetPoint.Model
                 if (!hasPt)
                 {
 
-                    var maxId = _pointModelList.Count == 0 ? -1 : _pointModelList.Max(p => int.Parse(p.Name.Trim('P', 'p')));
+                    var maxId = _pointModelList.Count == 0 ? -1 : _pointModelList.Max(p =>
+                        int.TryParse(p.Name.Trim('P', 'p'), out int ret) ? ret : 0);
+
                     _pointModelList.Add(new PointModel()
                     {
-                        Name = $"P{maxId + 1}",
+                        Name = "P" + (++maxId == 0 ? string.Empty : maxId.ToString()),
                         XValue = pos.X,
                         YValue = pos.Y,
                         ZValue = pos.Z
@@ -38,6 +44,7 @@ namespace PartBuilder.GetPoint.Model
                 }
             };
 
+            // point erased event
             HostApplicationServices.WorkingDatabase.ObjectErased += (o, e) =>
             {
                 if (!(e.DBObject is DBPoint)) return;
@@ -77,8 +84,6 @@ namespace PartBuilder.GetPoint.Model
                 RaisePropertyChanged("PointModelList");
             }
         }
-
-        public Point3d BasePoint { get; set; } = Point3d.Origin;
 
         /// <summary>
         /// Selected item of view, only support single row

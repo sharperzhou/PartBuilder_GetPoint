@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SQLite;
-using System.IO;
 
 namespace PartBuilder.GetPoint.DataAccess
 {
@@ -52,7 +47,11 @@ namespace PartBuilder.GetPoint.DataAccess
             return true;
         }
 
-
+        /// <summary>
+        /// Create a sql connection
+        /// </summary>
+        /// <param name="dbFile"></param>
+        /// <returns></returns>
         public static SQLiteConnection GetConnection(string dbFile)
         {
             return new SQLiteConnection($"Data Source={dbFile};");

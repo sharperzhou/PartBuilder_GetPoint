@@ -30,6 +30,7 @@ namespace PartBuilder.GetPoint
             }
         }
 
+        #region For test
         [CommandMethod("AddPoint")]
         public static void AddPoint()
         {
@@ -51,5 +52,6 @@ namespace PartBuilder.GetPoint
             var names = helper.GetAllNames();
             MessageBox.Show(string.Join("\n", names));
         }
+        #endregion
     }
 }

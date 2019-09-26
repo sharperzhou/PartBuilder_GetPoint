@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using GrxCAD.Geometry;
-using PartBuilder.GetPoint.Controller;
+﻿using PartBuilder.GetPoint.Controller;
 using PartBuilder.GetPoint.DataAccess;
 using PartBuilder.GetPoint.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace PartBuilder.GetPoint.View
 {
     /// <summary>
     ///     Interaction logic for SavePointUI.xaml
     /// </summary>
-    public partial class  SavePointUI : Window
+    public partial class SavePointUI : Window
     {
         private readonly List<string> _dbFiles = new List<string>();
 
@@ -22,12 +22,22 @@ namespace PartBuilder.GetPoint.View
             DbFileListBox.ItemsSource = _dbFiles;
         }
 
+        /// <summary>
+        /// load window event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var dbFileHelper = new DbFileHelper();
             _dbFiles.AddRange(dbFileHelper.GetAllNames());
         }
 
+        /// <summary>
+        /// add new db file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddDbBtn_Click(object sender, RoutedEventArgs e)
         {
             var dbFileHelper = new DbFileHelper();
@@ -42,6 +52,11 @@ namespace PartBuilder.GetPoint.View
             DbFileListBox.SelectedIndex = _dbFiles.IndexOf(newDb);
         }
 
+        /// <summary>
+        /// list box selected changed event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DbFileListBox_SelChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count <= 0) return;
@@ -51,12 +66,17 @@ namespace PartBuilder.GetPoint.View
             var partsTree = partsController.BuildPartsTree();
             var dirs = partsController.GetDirectory();
 
-            PartsTreeView.ItemsSource = new List<PartsModel> {partsTree};
+            PartsTreeView.ItemsSource = new List<PartsModel> { partsTree };
             CboCatalog.ItemsSource = dirs;
             CboCatalog.DisplayMemberPath = "Name";
             CboCatalog.SelectedValue = "Id";
         }
 
+        /// <summary>
+        /// add new catalog in db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddDirBtn_Click(object sender, RoutedEventArgs e)
         {
             var selPart = PartsTreeView.SelectedItem as PartsModel;
@@ -76,7 +96,7 @@ namespace PartBuilder.GetPoint.View
                     {
                         var partsTree = controller.BuildPartsTree();
                         var dirs = controller.GetDirectory();
-                        PartsTreeView.ItemsSource = new List<PartsModel> {partsTree};
+                        PartsTreeView.ItemsSource = new List<PartsModel> { partsTree };
                         CboCatalog.ItemsSource = dirs;
                         CboCatalog.DisplayMemberPath = "Name";
                         CboCatalog.SelectedValue = "Id";
@@ -93,11 +113,21 @@ namespace PartBuilder.GetPoint.View
                 }
         }
 
+        /// <summary>
+        /// close window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancleBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// save point into db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             var selItem = CboCatalog.SelectedItem as PartsModel;
@@ -107,9 +137,9 @@ namespace PartBuilder.GetPoint.View
                 return;
             }
 
-            var obj = DataContext as List<object>;
+            var points = DataContext as ObservableCollection<PointModel>;
 
-            if (obj == null || obj.Count != 2)
+            if (points == null || points.Count <= 0)
             {
                 MessageBox.Show("请先选择点");
                 return;
@@ -118,7 +148,7 @@ namespace PartBuilder.GetPoint.View
             var db = DbFileListBox.SelectedItem.ToString();
             var partId = -1;
             if (new PartsController(db).AddPart(selItem.Id, NewPartName.Text, out partId) &&
-                PointController.AddPoints(obj[0] as IList<PointModel>, (Point3d) obj[1], partId, db))
+                PointController.AddPoints(points, partId, db))
             {
                 MessageBox.Show("保存成功！");
                 Close();

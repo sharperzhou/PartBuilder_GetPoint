@@ -5,12 +5,20 @@ using System.Linq;
 
 namespace PartBuilder.GetPoint.Controller
 {
+    /// <summary>
+    /// Part or directory controller class
+    /// </summary>
     class PartsController
     {
         public PartsController(string dbName)
         {
             _dbName = dbName;
         }
+
+        /// <summary>
+        /// get a parts and directories tree (root node)
+        /// </summary>
+        /// <returns>root node</returns>
         public PartsModel BuildPartsTree()
         {
             IList<PartsModel> directories = null;
@@ -65,6 +73,10 @@ namespace PartBuilder.GetPoint.Controller
             return root;
         }
 
+        /// <summary>
+        /// get directories
+        /// </summary>
+        /// <returns></returns>
         public IList<PartsModel> GetDirectory()
         {
             using (var dao = new PartsDao(_dbName))
@@ -73,6 +85,12 @@ namespace PartBuilder.GetPoint.Controller
             }
         }
 
+        /// <summary>
+        /// add directory
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
         public bool AddDirectory(int parentId, string newName)
         {
             using (var dao = new PartsDao(_dbName))
@@ -81,6 +99,13 @@ namespace PartBuilder.GetPoint.Controller
             }
         }
 
+        /// <summary>
+        /// add part
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <param name="newName"></param>
+        /// <param name="newPartId"></param>
+        /// <returns></returns>
         public bool AddPart(int parentId, string newName, out int newPartId)
         {
             using (var dao = new PartsDao(_dbName))

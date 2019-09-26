@@ -1,29 +1,44 @@
-﻿using PartBuilder.GetPoint.Properties;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace PartBuilder.GetPoint.Model
 {
+    /// <summary>
+    /// part or directory model
+    /// </summary>
     public class PartsModel
     {
         public enum Type { PART, DIRECTORY, DIRECTORY_HIDE, ROOT }
 
+        #region Data area
+        /// <summary>
+        /// part or directory id
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// part or directory parent id
+        /// </summary>
         public int PId { get; set; }
 
+        /// <summary>
+        /// part or directory sort pos
+        /// </summary>
         public int SortPos { get; set; }
 
+        /// <summary>
+        /// type (PART, DIRECTORY, DIRECTORY_HIDE, ROOT)
+        /// </summary>
         public Type PartsType { get; set; }
 
+        /// <summary>
+        /// show name
+        /// </summary>
         public string Name { get; set; }
 
         public string _iconPath;
+        /// <summary>
+        /// icon in tree ctrl
+        /// </summary>
         public string IconPath
         {
             get
@@ -40,8 +55,20 @@ namespace PartBuilder.GetPoint.Model
                 return _iconPath;
             }
         }
+        #endregion
 
+        #region Tree node op
+
+        /// <summary>
+        /// parent item
+        /// </summary>
         public PartsModel Parent { get; set; }
+
+        /// <summary>
+        /// children, the default is zero child
+        /// </summary>
         public ObservableCollection<PartsModel> Children { get; set; } = new ObservableCollection<PartsModel>();
+
+        #endregion
     }
 }

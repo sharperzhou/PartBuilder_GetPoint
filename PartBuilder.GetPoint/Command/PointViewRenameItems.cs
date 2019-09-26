@@ -2,10 +2,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Linq;
 
 namespace PartBuilder.GetPoint.Command
 {
+    /// <summary>
+    /// Rename point list from the first point to the last one, e.g. P0, P1, ..., Pn
+    /// </summary>
     class PointViewRenameItems : ICommand
     {
         public event EventHandler CanExecuteChanged
@@ -24,13 +26,17 @@ namespace PartBuilder.GetPoint.Command
             return _viewModel.PointModelList.Count > 0;
         }
 
+        /// <summary>
+        /// rename logic
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
-            var newList =  new ObservableCollection<PointModel>(_viewModel.PointModelList);
+            var newList = new ObservableCollection<PointModel>(_viewModel.PointModelList);
 
             for (int i = 0; i < newList.Count; i++)
             {
-                newList[i].Name = $"P{i}";
+                newList[i].Name = "P" + (i == 0 ? string.Empty : i.ToString());
             }
 
             _viewModel.PointModelList = newList;

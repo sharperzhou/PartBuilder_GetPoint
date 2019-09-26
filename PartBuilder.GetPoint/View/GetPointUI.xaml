@@ -28,16 +28,7 @@
         <DockPanel Grid.Column="1" Margin="5">
             <GroupBox Header="点操作" Padding="4" DockPanel.Dock="Top">
                 <StackPanel>
-                    <DockPanel >
-                        <Button VerticalAlignment="Center" Width="20" Height="20" Margin="3" 
-                              ToolTip="点击进行拾取基点操作" Click="Pick_Base" Background="Transparent">
-                            <Button.Content>
-                              <Image Source="/PartBuilder.GetPoint;component/Images/pick.png" />
-                            </Button.Content>
-                        </Button>
-                        <TextBox x:Name="BasePoint" Text="{Binding BasePoint, Mode=TwoWay}" Margin="3" FontWeight="Bold" Height="18" IsReadOnly="True"
-                               ToolTip="所拾取的点保存至数据库时，以基点进行平移变换"/>
-                    </DockPanel>
+                    <DockPanel />
                     <StackPanel Orientation="Horizontal">
                         <Button VerticalAlignment="Center" Width="20" Height="20" Margin="3" 
                                 ToolTip="点击此按钮进入CAD界面进行拾取点操作" Click="Add_Point" Background="Transparent">
