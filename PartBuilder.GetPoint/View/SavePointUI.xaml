@@ -54,8 +54,10 @@
                 <Button Grid.Row="1" Grid.Column="2"  Content="新建分类"  Margin="2,2,5,2"
                         IsEnabled="{Binding ElementName=NewCatalogTextBox, Path=Text.Length}" Click="AddDirBtn_Click"/>
             </Grid>
+            <Rectangle DockPanel.Dock="Top" Fill="#FFB94F4F" Height="3" Margin="5 10 5 0"/>
             <TextBlock Text="新零件名" DockPanel.Dock="Top" Margin="5,5,5,0"/>
-            <TextBox x:Name="NewPartName" Text="" DockPanel.Dock="Top" Margin="5,0,5,5"/>
+            <ComboBox Name="NewPartName" DockPanel.Dock="Top" IsEditable="True" Margin="5,0,5,5"/>
+            <!--<TextBox x:Name="NewPartName" Text="" DockPanel.Dock="Top" Margin="5,0,5,5"/>-->
             <TextBlock Text="所属分类" DockPanel.Dock="Top" Margin="5,5,5,0"/>
             <ComboBox Name="CboCatalog" DockPanel.Dock="Top" Margin="5,0,5,5"/>
             <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="5">
@@ -64,7 +66,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Name="BtnSave" Content="保存" Margin="5" IsEnabled="{Binding ElementName=NewPartName,Path=Text.Length}" Click="SaveBtn_Click"/>
-                <Button Content="取消" Grid.Column="1" Margin="5" IsDefault="True" Click="CancleBtn_Click"/>
+                <Button Content="取消" Grid.Column="1" Margin="5" IsDefault="True" Click="CancelBtn_Click"/>
             </Grid>
         </DockPanel>
     </Grid>

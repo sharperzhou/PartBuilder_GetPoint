@@ -86,6 +86,18 @@ namespace PartBuilder.GetPoint.Controller
         }
 
         /// <summary>
+        /// get parts
+        /// </summary>
+        /// <returns></returns>
+        public IList<PartsModel> GetParts()
+        {
+            using (var dao = new PartsDao(_dbName))
+            {
+                return dao.GetParts();
+            }
+        }
+
+        /// <summary>
         /// add directory
         /// </summary>
         /// <param name="parentId"></param>

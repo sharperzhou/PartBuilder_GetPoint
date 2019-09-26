@@ -65,11 +65,16 @@ namespace PartBuilder.GetPoint.View
             var partsController = new PartsController(curDb);
             var partsTree = partsController.BuildPartsTree();
             var dirs = partsController.GetDirectory();
+            var parts = partsController.GetParts();
 
             PartsTreeView.ItemsSource = new List<PartsModel> { partsTree };
             CboCatalog.ItemsSource = dirs;
             CboCatalog.DisplayMemberPath = "Name";
             CboCatalog.SelectedValue = "Id";
+
+            NewPartName.ItemsSource = parts;
+            NewPartName.DisplayMemberPath = "Name";
+            NewPartName.SelectedValue = "Id";
         }
 
         /// <summary>
@@ -118,7 +123,7 @@ namespace PartBuilder.GetPoint.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CancleBtn_Click(object sender, RoutedEventArgs e)
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -130,25 +135,44 @@ namespace PartBuilder.GetPoint.View
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            var selItem = CboCatalog.SelectedItem as PartsModel;
-            if (selItem == null)
-            {
-                MessageBox.Show("请先选择零件所属分类");
-                return;
-            }
-
             var points = DataContext as ObservableCollection<PointModel>;
-
             if (points == null || points.Count <= 0)
             {
                 MessageBox.Show("请先选择点");
                 return;
             }
 
+            if (DbFileListBox.SelectedItem == null)
+            {
+                MessageBox.Show("请先选择零件库");
+                return;
+            }
             var db = DbFileListBox.SelectedItem.ToString();
+
+            var selPart = NewPartName.SelectedItem as PartsModel;
+
             var partId = -1;
-            if (new PartsController(db).AddPart(selItem.Id, NewPartName.Text, out partId) &&
-                PointController.AddPoints(points, partId, db))
+            if (selPart == null)
+            {
+                var selDir = CboCatalog.SelectedItem as PartsModel;
+                if (selDir == null)
+                {
+                    MessageBox.Show("请先选择零件所属分类");
+                    return;
+                }
+
+                if (!new PartsController(db).AddPart(selDir.Id, NewPartName.Text, out partId))
+                {
+                    MessageBox.Show("保存失败，无法新建零件库！");
+                    return;
+                }
+            }
+            else
+            {
+                partId = selPart.Id;
+            }
+
+            if (PointController.AddPoints(points, partId, db))
             {
                 MessageBox.Show("保存成功！");
                 Close();
