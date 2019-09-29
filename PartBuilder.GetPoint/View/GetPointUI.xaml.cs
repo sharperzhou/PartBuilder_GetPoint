@@ -13,10 +13,15 @@ namespace PartBuilder.GetPoint.View
         {
             InitializeComponent();
 
-            _pointManager = new PointMonitor();
+            _pointMonitor = new PointMonitor();
+            var viewModel = new PointViewModel();
+
+            viewModel.SelectedRowChanged += _pointMonitor.OnHighlightPoint;
+
+            DataContext = viewModel;
         }
 
-        private readonly PointMonitor _pointManager;
+        private readonly PointMonitor _pointMonitor;
 
         /// <summary>
         /// Exit UI window
@@ -61,7 +66,7 @@ namespace PartBuilder.GetPoint.View
         /// <param name="e"></param>
         private void Window_Closed(object sender, System.EventArgs e)
         {
-            _pointManager.Dispose();
+            _pointMonitor.Dispose();
         }
 
         /// <summary>

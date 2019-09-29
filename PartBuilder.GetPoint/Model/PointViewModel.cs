@@ -1,6 +1,7 @@
 ﻿using GrxCAD.DatabaseServices;
 using GrxCAD.Geometry;
 using PartBuilder.GetPoint.Command;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace PartBuilder.GetPoint.Model
     /// <summary>
     /// Point view model (Data Grid control)
     /// </summary>
-    class PointViewModel : INotifyPropertyChanged
+    public class PointViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event SelectedRowEventHandler SelectedRowChanged;
 
         public PointViewModel()
         {
@@ -39,7 +42,8 @@ namespace PartBuilder.GetPoint.Model
                         Name = "P" + (++maxId == 0 ? string.Empty : maxId.ToString()),
                         XValue = pos.X,
                         YValue = pos.Y,
-                        ZValue = pos.Z
+                        ZValue = pos.Z,
+                        PointId = e.DBObject.ObjectId
                     });
                 }
             };
@@ -51,7 +55,8 @@ namespace PartBuilder.GetPoint.Model
 
                 var pos = (e.DBObject as DBPoint).Position;
                 var query = _pointModelList.Where(
-                        p => new Point3d(p.XValue, p.YValue, p.ZValue) == pos
+                        p => (new Point3d(p.XValue, p.YValue, p.ZValue) == pos)
+                        || (e.DBObject.ObjectId == p.PointId)
                     ).Select(p => p).ToList();
 
                 foreach (var res in query)
@@ -85,10 +90,25 @@ namespace PartBuilder.GetPoint.Model
             }
         }
 
+
+        private PointModel _selectedItem;
         /// <summary>
         /// Selected item of view, only support single row
         /// </summary>
-        public PointModel SelectedItem { get; set; }
+        public PointModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                if (_selectedItem != value)
+                {
+                    if (SelectedRowChanged != null)
+                        SelectedRowChanged.Invoke(this, new SelectedRowChangedEventArgs(value, _selectedItem));
+                    _selectedItem = value;
+                    RaisePropertyChanged(nameof(SelectedItem));
+                }
+            }
+        }
 
         /// <summary>
         /// Command for move up button
@@ -104,5 +124,44 @@ namespace PartBuilder.GetPoint.Model
         /// Command for rename all names button
         /// </summary>
         public ICommand RenameCommand => new PointViewRenameItems(this);
+
+        /// <summary>
+        /// Command for move into first
+        /// </summary>
+        public ICommand MoveFirstCommand { get => new PointViewMoveFirst(this); }
+
+        /// <summary>
+        /// Command for move into last
+        /// </summary>
+        public ICommand MoveLastCommand { get => new PointViewMoveLast(this); }
+
+        /// <summary>
+        /// Mark point in CAD and heighlint selection in data grid ctrl
+        /// </summary>
+        public ICommand MartPointCommand { get => new PointViewMarkPoint(this); }
     }
+
+    /// <summary>
+    /// Data grid selection changed event args
+    /// </summary>
+    public class SelectedRowChangedEventArgs : EventArgs
+    {
+        public SelectedRowChangedEventArgs(PointModel current, PointModel previous)
+        {
+            CurrentItem = current;
+            PreviousItem = previous;
+        }
+
+        /// <summary>
+        /// current item
+        /// </summary>
+        public PointModel CurrentItem { get; }
+
+        /// <summary>
+        /// previous item
+        /// </summary>
+        public PointModel PreviousItem { get; }
+    }
+
+    public delegate void SelectedRowEventHandler(object sender, SelectedRowChangedEventArgs e);
 }

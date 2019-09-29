@@ -1,4 +1,6 @@
-﻿using GrxCAD.DatabaseServices;
+﻿using GrxCAD.ApplicationServices;
+using GrxCAD.DatabaseServices;
+using PartBuilder.GetPoint.Model;
 using System;
 using System.Collections.Generic;
 
@@ -51,6 +53,38 @@ namespace PartBuilder.GetPoint.CAD
                 }
 
                 trans.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Hightlight/Unhightlight the selected point in CAD
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnHighlightPoint(object sender, SelectedRowChangedEventArgs e)
+        {
+            var db = HostApplicationServices.WorkingDatabase;
+            var editor = Application.DocumentManager.MdiActiveDocument.Editor;
+            editor.Regen();
+
+            try
+            {
+                using (var trans = db.TransactionManager.StartTransaction())
+                {
+                    var point = trans.GetObject(e.PreviousItem?.PointId ?? ObjectId.Null, OpenMode.ForWrite) as DBPoint;
+                    if (point != null) point.ColorIndex = 0;
+                    //point?.Unhighlight();
+
+                    point = trans.GetObject(e.CurrentItem?.PointId ?? ObjectId.Null , OpenMode.ForWrite) as DBPoint;
+                    if (point != null) point.ColorIndex = 6;
+                    //point?.Highlight();
+
+                    trans.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                editor.WriteMessage($"\n{ex.Message}");
             }
         }
 

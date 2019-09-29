@@ -17,7 +17,10 @@
         <DataGrid x:Name="GridPickedPoint" Grid.Column="0" Margin="5" AlternatingRowBackground="#FFECECC4" AlternationCount="2"
                   ItemsSource="{Binding PointModelList, Mode=TwoWay}" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="True"
                   SelectionMode="Single" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                  CanUserResizeColumns="False" CanUserSortColumns="False" >
+                  CanUserResizeColumns="False" CanUserSortColumns="False" Background="Transparent">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightSkyBlue"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay}" Header="名称" MinWidth="80" Width="*"/>
                 <DataGridTextColumn Binding="{Binding XValue, Mode=TwoWay}" Header="X值" MinWidth="80" Width="*"/>
@@ -33,7 +36,7 @@
                         <Button VerticalAlignment="Center" Width="20" Height="20" Margin="3" 
                                 ToolTip="点击此按钮进入CAD界面进行拾取点操作" Click="Add_Point" Background="Transparent">
                             <Button.Content>
-                              <Image Source="/PartBuilder.GetPoint;component/Images/add.png"/>
+                                <Image Source="/PartBuilder.GetPoint;component/Images/add.png"/>
                             </Button.Content>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Text="添加点" Margin="3"/>
@@ -42,17 +45,29 @@
                         <Button VerticalAlignment="Center" Width="20" Height="20" Margin="3" 
                                 ToolTip="点击此按钮进入CAD界面进行删除点操作" Click="Remove_Point" Background="Transparent">
                             <Button.Content>
-                              <Image Source="/PartBuilder.GetPoint;component/Images/remove.png"/>
+                                <Image Source="/PartBuilder.GetPoint;component/Images/remove.png"/>
                             </Button.Content>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Text="删除点" Margin="3"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button VerticalAlignment="Center" Width="20" Height="20" Margin="3" 
+                              ToolTip="进入CAD页面中标记点，使表格控件中的选中行高亮显示" 
+                              Command="{Binding Path=MartPointCommand}" Background="Transparent">
+                            <Button.Content>
+                                <Image Source="/PartBuilder.GetPoint;component/Images/mark.png"/>
+                            </Button.Content>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center" Text="标记点" Margin="3"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="数据操作" Padding="4" DockPanel.Dock="Top">
                 <StackPanel>
+                    <Button Content="移至首行" Margin="3" Command="{Binding Path=MoveFirstCommand}"/>
                     <Button Content="上移行" Margin="3" Command="{Binding MoveUpCommand}"/>
                     <Button Content="下移行" Margin="3" Command="{Binding MoveDownCommand}"/>
+                    <Button Content="移至末行" Margin="3" Command="{Binding Path=MoveLastCommand}"/>
                     <Button Content="重新命名" Margin="3" Command="{Binding RenameCommand}"/>
                 </StackPanel>
             </GroupBox>

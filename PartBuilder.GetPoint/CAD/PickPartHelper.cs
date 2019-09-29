@@ -143,6 +143,14 @@ namespace PartBuilder.GetPoint.CAD
                         var e = new EllipticalArc3d(ellipse.Center, ellipse.MajorAxis, ellipse.MinorAxis,
                             ellipse.MajorRadius, ellipse.MinorRadius);
                         _keyPoints.Add(ellipse.Center);
+
+                        // ellipse arc
+                        if (!e.IsCircular())
+                        {
+                            _keyPoints.Add(e.StartPoint);
+                            _keyPoints.Add(e.EndPoint);
+                        }
+                        
                     }
                     else if (obj is Polyline)
                     {

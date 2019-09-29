@@ -1,9 +1,11 @@
-﻿namespace PartBuilder.GetPoint.Model
+﻿using GrxCAD.DatabaseServices;
+
+namespace PartBuilder.GetPoint.Model
 {
     /// <summary>
     /// Point model
     /// </summary>
-    class PointModel
+    public class PointModel
     {
         /// <summary>
         /// Name or number of point, P0,P1,...
@@ -24,5 +26,10 @@
         /// Z value of Point3d
         /// </summary>
         public double ZValue { get; set; }
+
+        /// <summary>
+        /// db handle of DbPoint
+        /// </summary>
+        public ObjectId PointId { get; set; }
     }
 }

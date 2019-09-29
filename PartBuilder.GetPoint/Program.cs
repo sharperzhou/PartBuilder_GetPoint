@@ -19,9 +19,7 @@ namespace PartBuilder.GetPoint
             var helper = new PickPartHelper();
             if (helper.Pick())
             {
-                var pointViewModel = new PointViewModel();
                 var ui = new GetPointUI();
-                ui.DataContext = pointViewModel;
 
                 var ptCreator = new PointCreator();
                 ptCreator.Create(helper.KeyPoints);
