@@ -7,7 +7,7 @@
              d:DesignHeight="400" d:DesignWidth="500" WindowStyle="ThreeDBorderWindow" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" 
              Title="系列化零件库设计系统 - 获取特征点"
              Height="400" Width="500"
-             Closed="Window_Closed">
+             Closed="Window_Closed" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

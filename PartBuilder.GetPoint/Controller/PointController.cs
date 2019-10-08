@@ -1,6 +1,7 @@
 ﻿using PartBuilder.GetPoint.DataAccess;
 using PartBuilder.GetPoint.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PartBuilder.GetPoint.Controller
 {
@@ -20,8 +21,12 @@ namespace PartBuilder.GetPoint.Controller
         {
             if (partId < 0) return false;
 
-            var transPt = new List<PointModel>(points);
-            var basePt = transPt[0];
+            var transPt = new List<PointModel>();
+            foreach (var p in points)
+            {
+                transPt.Add((PointModel)p.Clone());
+            }
+            var basePt = points[0];
 
             transPt.ForEach(m =>
             {
@@ -30,7 +35,7 @@ namespace PartBuilder.GetPoint.Controller
                 m.ZValue -= basePt.ZValue;
             });
 
-            return PointDao.AddPoints(points, partId, dbName);
+            return PointDao.AddPoints(transPt, partId, dbName);
         }
     }
 }

@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              Width="600" Height="400" WindowStartupLocation="CenterOwner"
              Title="系列化零件库设计系统 - 保存特征点"
-             Loaded="Window_Loaded">
+             Loaded="Window_Loaded" ShowInTaskbar="False" Topmost="True">
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

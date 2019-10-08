@@ -1,11 +1,12 @@
 ﻿using GrxCAD.DatabaseServices;
+using System;
 
 namespace PartBuilder.GetPoint.Model
 {
     /// <summary>
     /// Point model
     /// </summary>
-    public class PointModel
+    public class PointModel : ICloneable
     {
         /// <summary>
         /// Name or number of point, P0,P1,...
@@ -31,5 +32,10 @@ namespace PartBuilder.GetPoint.Model
         /// db handle of DbPoint
         /// </summary>
         public ObjectId PointId { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }
